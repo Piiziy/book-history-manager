@@ -9,6 +9,9 @@ const pwaConfig = withPWA({
 });
 
 const nextConfig: NextConfig = {
+  compiler: {
+    emotion: true,
+  },
   reactStrictMode: true,
 };
 

@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
       // Basic redirect
       {
         source: "/",
-        destination: "/home",
+        destination: "/login",
         permanent: true,
       },
     ];

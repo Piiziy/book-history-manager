@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import RootStyleRegistry from "./emotion";
 import Footer from "./Footer";
+import Provider from "./Providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,10 +29,10 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <RootStyleRegistry>
+        <Provider>
           {children}
           <Footer />
-        </RootStyleRegistry>
+        </Provider>
       </body>
     </html>
   );

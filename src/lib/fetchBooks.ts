@@ -16,15 +16,22 @@ export interface BookSearchResult {
   item: BookItem[];
 }
 
-export async function fetchBooks(
-  query: string,
-  display = 10,
+interface FetchBooksProps {
+  query: string;
+  MaxResults?: number;
+  start?: number;
+  sort?: "sim" | "date";
+}
+
+export async function fetchBooks({
+  query,
+  MaxResults = 50,
   start = 1,
-  sort: "sim" | "date" = "sim"
-): Promise<BookSearchResult> {
+  sort = "sim",
+}: FetchBooksProps): Promise<BookSearchResult> {
   const params = new URLSearchParams({
     query,
-    display: display.toString(),
+    display: MaxResults.toString(),
     start: start.toString(),
     sort,
   });

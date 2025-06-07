@@ -12,7 +12,7 @@ export default function Home() {
         fontWeight: 700,
       }}
     >
-      <p css={{ fontSize: "1.75rem", fontWeight: 700 }}>
+      <p css={{ fontSize: "2rem", fontWeight: 700 }}>
         {session?.user?.name}
         <span css={{ fontSize: "1.5rem" }}>님 반갑습니다!</span>
       </p>

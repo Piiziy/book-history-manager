@@ -18,7 +18,7 @@ export async function GET(request: Request) {
 
   const apiUrl = `http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx?ttbkey=${ALADIN_TTB_KEY}&ItemId=${itemId}&start=${start}&sort=${sort}&SearchTarget=Book&output=js`;
 
-  const res = await fetch(apiUrl, {});
+  const res = await fetch(apiUrl);
   const raw = await res.text();
   const noSemi = raw.replace(/;\s*$/, "");
   const sanitized = noSemi.replace(/\\([^"\\/bfnrtu])/g, "\\\\$1");

@@ -6,6 +6,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get("query");
   const start = searchParams.get("start") ?? "1";
+  const MaxResults = searchParams.get("MaxResults") ?? "50";
   const sort = searchParams.get("sort") ?? "Accuracy";
 
   if (!query) {
@@ -15,7 +16,7 @@ export async function GET(request: Request) {
     );
   }
 
-  const apiUrl = `http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=${ALADIN_TTB_KEY}&Query=${query}&cover=big&start=${start}&sort=${sort}&SearchTarget=Book&output=js`;
+  const apiUrl = `http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=${ALADIN_TTB_KEY}&Query=${query}&cover=big&start=${start}&sort=${sort}&MaxResults=${MaxResults}&SearchTarget=Book&output=js`;
 
   const res = await fetch(apiUrl, {});
   const raw = await res.text();

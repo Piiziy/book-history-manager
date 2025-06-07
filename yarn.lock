@@ -1985,6 +1985,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-icons/all-files@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "@react-icons/all-files@npm:4.1.0"
+  peerDependencies:
+    react: "*"
+  checksum: 10c0/6327623b857ba2a9fdf835f2e7029feec7acdd53dc14163085789518d7e1323deb7db649b660d3bad3991285e8408238ad4d09c37b9a0ba7d2601dd74ac0ae56
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-babel@npm:^5.2.0":
   version: 5.3.1
   resolution: "@rollup/plugin-babel@npm:5.3.1"
@@ -4678,6 +4687,7 @@ __metadata:
     "@next-auth/prisma-adapter": "npm:^1.0.7"
     "@next/eslint-plugin-next": "npm:^15.3.3"
     "@prisma/client": "npm:6.9.0"
+    "@react-icons/all-files": "npm:^4.1.0"
     "@types/eslint-plugin-jsx-a11y": "npm:^6"
     "@types/next-pwa": "npm:^5"
     "@types/node": "npm:^20"

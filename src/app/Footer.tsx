@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 interface MenuItem {
@@ -12,6 +12,10 @@ interface MenuItem {
 }
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname === "/login") {
+    return null;
+  }
   const menuItems: MenuItem[] = [
     {
       icon: "🏠",
@@ -20,13 +24,13 @@ export default function Footer() {
     },
     {
       icon: "🔍",
-      label: "히스토리",
-      href: "/history",
+      label: "서재",
+      href: "/study",
     },
     {
       icon: "📋",
       label: "책 추가하기",
-      href: "/add-book",
+      href: "/addBook",
     },
     {
       icon: "⚙️",
@@ -36,6 +40,7 @@ export default function Footer() {
   ];
 
   const MenuItem = styled(Link)`
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -50,7 +55,7 @@ export default function Footer() {
 
   return (
     <div
-      css={css({
+      css={{
         position: "fixed",
         bottom: 0,
         left: 0,
@@ -59,45 +64,29 @@ export default function Footer() {
         padding: "0.5rem 0",
         borderTop: "1px solid rgba(255, 255, 255, 0.1)",
         zIndex: 1000,
-      })}
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
     >
-      <nav
-        css={css({
-          maxWidth: "1280px",
-          margin: "0 auto",
-          padding: "0 1rem",
-        })}
-      >
-        <ul
-          css={css({
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            margin: 0,
-            padding: 0,
-            listStyle: "none",
-          })}
-        >
-          {menuItems.map((item) => (
-            <MenuItem key={item.href} href={item.href}>
-              <span
-                css={css({
-                  fontSize: "1.5rem",
-                })}
-              >
-                {item.icon}
-              </span>
-              <span
-                css={css({
-                  marginTop: "0.25rem",
-                })}
-              >
-                {item.label}
-              </span>
-            </MenuItem>
-          ))}
-        </ul>
-      </nav>
+      {menuItems.map((item) => (
+        <MenuItem key={item.href} href={item.href}>
+          <span
+            css={{
+              fontSize: "1.5rem",
+            }}
+          >
+            {item.icon}
+          </span>
+          <span
+            css={{
+              marginTop: "0.25rem",
+            }}
+          >
+            {item.label}
+          </span>
+        </MenuItem>
+      ))}
     </div>
   );
 }

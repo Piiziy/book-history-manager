@@ -12,6 +12,9 @@ const nextConfig: NextConfig = {
   compiler: {
     emotion: true,
   },
+  images: {
+    domains: ["image.aladin.co.kr"],
+  },
   async redirects() {
     return [
       // Basic redirect

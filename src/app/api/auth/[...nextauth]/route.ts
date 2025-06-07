@@ -4,29 +4,25 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 
-// 1) AuthOptions 정의
 export const authOptions: AuthOptions = {
-  adapter: PrismaAdapter(prisma), // Prisma Adapter 연동
+  adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
-      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET!,
-      // 특히 Google에서 반드시 scope에 profile,email 요청
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
         params: {
           scope: "openid email profile",
         },
       },
     }),
-    // (필요하다면 다른 프로바이더 추가 가능)
   ],
   debug: true,
-  secret: process.env.NEXTAUTH_URL, // 세션 암호화 등 내부적으로 필요
+  secret: process.env.NEXTAUTH_URL,
   session: {
-    strategy: "database", // 세션 데이터를 DB에 저장
+    strategy: "database",
   },
   callbacks: {
-    // 세션에 포함할 사용자 정보 확장 (필요 시)
     async session({ session, user }) {
       if (session.user) {
         session.user.email = user.email;
@@ -38,6 +34,5 @@ export const authOptions: AuthOptions = {
   },
 };
 
-// 2) NextAuth 핸들러 내보내기
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

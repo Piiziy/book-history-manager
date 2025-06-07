@@ -18,8 +18,9 @@ model User {
   image         String?
 
   // NextAuth 연동을 위해 Account 및 Session과 1:N 관계
-  accounts Account[]
-  sessions Session[]
+  accounts  Account[]
+  sessions  Session[]
+  userBooks UserBook[]
 }
 
 model Account {
@@ -56,4 +57,44 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Book {
+  id         String @id @default(cuid())
+  title      String
+  totalPages Int
+
+  userBooks UserBook[]
+}
+
+model UserBook {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  book   Book   @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId String
+
+  status     ReadingStatus
+  startedAt  DateTime
+  finishedAt DateTime?
+  records    ReadingRecord[]
+
+  @@unique([userId, bookId])
+}
+
+model ReadingRecord {
+  id         String   @id @default(cuid())
+  userBook   UserBook @relation(fields: [userBookId], references: [id], onDelete: Cascade)
+  userBookId String
+
+  date            DateTime
+  pagesRead       Int
+  cumulativePages Int
+
+  @@unique([userBookId, date]) // 하루에 한 번만 기록
+}
+
+enum ReadingStatus {
+  CURRENTLY_READING
+  COMPLETED
 }

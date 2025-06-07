@@ -1,6 +1,5 @@
-/** @jsxImportSource @emotion/react */
-"use client";
+import BookList from "@/components/findBook/BookList";
 
 export default function Home() {
-  return <div css={{ height: 200 }}>asdf</div>;
+  return <BookList />;
 }

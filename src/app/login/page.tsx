@@ -4,6 +4,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
+import Image from "next/image";
 
 export default function LoginPage() {
   const { status } = useSession();
@@ -20,55 +21,76 @@ export default function LoginPage() {
   }
 
   return (
-    <div
-      css={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#f7f7f7",
-        padding: "2rem",
-      }}
-    >
+    <>
       <h1
         css={{
-          marginBottom: "1.5rem",
-          fontSize: "2rem",
+          marginLeft: "2rem",
+          marginTop: "6rem",
+          marginBottom: "6rem",
+          fontSize: "1.75rem",
+          fontWeight: 700,
           color: "#333",
         }}
       >
-        환영합니다!
+        만나서 반갑습니다!
       </h1>
-      <p
+      <div
         css={{
-          marginBottom: "2rem",
-          fontSize: "1rem",
-          color: "#555",
-          textAlign: "center",
-          maxWidth: "300px",
+          margin: "0 2rem",
+          width: "calc(100% - 4rem)",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
         }}
       >
-        계속하려면 Google 계정으로 로그인하세요.
-      </p>
-      <button
-        onClick={() => signIn("google")}
-        css={{
-          padding: "0.75rem 1.5rem",
-          backgroundColor: "#4285f4",
-          color: "#fff",
-          border: "none",
-          borderRadius: "4px",
-          fontSize: "1rem",
-          cursor: "pointer",
-          transition: "background-color 0.2s ease-in-out",
-          "&:hover": {
-            backgroundColor: "#357ae8",
-          },
-        }}
-      >
-        Google 계정으로 로그인
-      </button>
-    </div>
+        <p
+          css={{
+            marginBottom: "1rem",
+            fontSize: "1rem",
+            fontWeight: 600,
+            color: "#9299A0",
+          }}
+        >
+          소설 계정으로 로그인하기
+        </p>
+        <button
+          onClick={() => signIn("google")}
+          css={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "0.75rem",
+            backgroundColor: "#fff",
+            color: "#000",
+            border: "none",
+            borderRadius: "6px",
+            fontSize: "1rem",
+            fontWeight: 600,
+            cursor: "pointer",
+            transition: "transform 0.2s ease, box-shadow 0.2s ease",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+
+            "&:hover": {
+              transform: "translateY(-2px)",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+            },
+            "& img": {
+              marginRight: "0.5rem",
+              width: "20px",
+              height: "20px",
+            },
+          }}
+        >
+          <Image
+            src="/logo/google-logo.png"
+            alt="Google logo"
+            width={16}
+            height={16}
+          />
+          구글로 시작하기
+        </button>
+      </div>
+    </>
   );
 }

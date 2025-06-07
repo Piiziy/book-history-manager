@@ -1,6 +1,9 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
+import { useSession } from "next-auth/react";
+
 export default function Home() {
-  return <div css={{ height: 200 }}>asdf</div>;
+  const { data: session } = useSession();
+  return <div css={{ height: 200 }}>{session?.user?.name}</div>;
 }

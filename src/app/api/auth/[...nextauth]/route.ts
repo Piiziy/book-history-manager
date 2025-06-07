@@ -20,7 +20,8 @@ export const authOptions: AuthOptions = {
     }),
     // (필요하다면 다른 프로바이더 추가 가능)
   ],
-  secret: process.env.NEXT_PUBLIC_AUTH_SECRET, // 세션 암호화 등 내부적으로 필요
+  debug: true,
+  secret: process.env.NEXTAUTH_URL, // 세션 암호화 등 내부적으로 필요
   session: {
     strategy: "database", // 세션 데이터를 DB에 저장
   },

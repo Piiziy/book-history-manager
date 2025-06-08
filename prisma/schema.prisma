@@ -60,8 +60,9 @@ model VerificationToken {
 }
 
 model Book {
-  id         String @id @default(cuid())
+  id         String @id
   title      String
+  author     String
   totalPages Int
 
   userBooks UserBook[]

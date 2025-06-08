@@ -23,10 +23,6 @@ export default function Pagination({
   setPageGroup,
   handleSearch,
 }: PaginationProps) {
-  console.log(total);
-  console.log(page);
-  console.log(pageGroup);
-
   const iconButtonStyle = {
     width: "16px",
     height: "16px",
@@ -44,8 +40,6 @@ export default function Pagination({
   };
   const maxPageGroup = Math.ceil(total / 50);
   const maxPage = Math.ceil(total / 10);
-  console.log(maxPage);
-  console.log(maxPageGroup);
   const pageStartNumber = (pageGroup - 1) * 5 + 1;
   const pageEndNumber = Math.min(pageStartNumber + 4, maxPage);
   const pageNumbers = Array.from(

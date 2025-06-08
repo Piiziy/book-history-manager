@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { Parser as Xml2JsParser } from "xml2js";
 
 const ALADIN_TTB_KEY = process.env.ALADIN_TTB_KEY!;
 
@@ -16,16 +17,15 @@ export async function GET(request: Request) {
     );
   }
 
-  const apiUrl = `http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=${ALADIN_TTB_KEY}&Query=${query}&cover=big&start=${start}&sort=${sort}&MaxResults=${MaxResults}&SearchTarget=Book&output=js`;
+  const apiUrl = `http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=${ALADIN_TTB_KEY}&Query=${query}&cover=big&start=${start}&sort=${sort}&MaxResults=${MaxResults}&SearchTarget=Book&output=xml`;
 
-  const res = await fetch(apiUrl, {});
-  const raw = await res.text();
-  const noSemi = raw.replace(/;\s*$/, "");
-  const sanitized = noSemi.replace(/\\([^"\\/bfnrtu])/g, "\\\\$1");
-  const data = JSON.parse(sanitized);
+  const resXml = await fetch(apiUrl);
+  const xmlText = await resXml.text();
+  const parser = new Xml2JsParser({ explicitArray: false });
+  const jsonObj = await parser.parseStringPromise(xmlText);
 
-  if (!res.ok) {
-    return NextResponse.json({ data }, { status: res.status });
+  if (!resXml.ok) {
+    return NextResponse.json({ jsonObj }, { status: resXml.status });
   }
-  return NextResponse.json(data);
+  return NextResponse.json(jsonObj.object);
 }

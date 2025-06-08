@@ -1,14 +1,15 @@
-// File: app/page.tsx
 /** @jsxImportSource @emotion/react */
 "use client";
 
 import { useCallback, useState } from "react";
 import { fetchBooks, BookItem } from "@/lib/fetchBooks";
 import Image from "next/image";
-import router from "next/router";
 import Pagination from "./Pagination";
-import LoadingDotsSkeleton from "@/ui/skeleton";
+import LoadingDotsSkeleton from "@/ui/Skeleton";
 import BookListHeader from "./BookListHeader";
+import AddBookDialog from "./addBookDialog";
+import { addBook } from "@/lib/addBook";
+import Toast from "@/ui/Toast";
 
 export default function BookList() {
   const [query, setQuery] = useState("");
@@ -18,6 +19,9 @@ export default function BookList() {
   const [page, setPage] = useState<1 | 2 | 3 | 4 | 5>(1);
   const [pageGroup, setPageGroup] = useState(1);
   const [total, setTotal] = useState(0);
+  const [isOpenDialog, setIsOpenDialog] = useState(false);
+  const [selectedBook, setSelectedBook] = useState<BookItem | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const handleSearch = useCallback(
     (pageGroup: number) => {
@@ -35,6 +39,19 @@ export default function BookList() {
     [query]
   );
 
+  const handleAddBook = async (book: BookItem) => {
+    try {
+      await addBook(book);
+      setToastMessage("책이 추가되었습니다");
+      setTimeout(() => setToastMessage(null), 3000);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      console.error(err);
+      setToastMessage(err.message);
+      setTimeout(() => setToastMessage(null), 3000);
+    }
+  };
+
   return (
     <>
       <main
@@ -49,7 +66,7 @@ export default function BookList() {
           setPageGroup={setPageGroup}
           handleSearch={handleSearch}
         />
-
+        {toastMessage && <Toast message={toastMessage} />}
         <div css={{ marginTop: "196px" }}>
           {error && (
             <p>
@@ -69,7 +86,8 @@ export default function BookList() {
                     marginBottom: "3rem",
                   }}
                   onClick={() => {
-                    router.push(`/books/${book.isbn}`);
+                    setSelectedBook(book);
+                    setIsOpenDialog(true);
                   }}
                 >
                   <Image
@@ -124,6 +142,13 @@ export default function BookList() {
             />
           )}
         </div>
+        {isOpenDialog && (
+          <AddBookDialog
+            setIsOpen={setIsOpenDialog}
+            onConfirm={handleAddBook}
+            book={selectedBook}
+          />
+        )}
       </main>
     </>
   );

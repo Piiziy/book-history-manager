@@ -1,6 +1,7 @@
 import { BookItem } from "./fetchBooks";
 
 export async function addBook(book: BookItem) {
+  console.log(book);
   const response = await fetch("/api/books/add", {
     method: "POST",
     body: JSON.stringify(book),

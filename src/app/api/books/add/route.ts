@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { prisma } from "@/lib/prisma";
 import { Parser as Xml2JsParser } from "xml2js";
 
 const ALADIN_TTB_KEY = process.env.ALADIN_TTB_KEY!;
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
+  console.log(session);
   if (!session?.user?.email) {
     return NextResponse.json({ error: "로그인 필요" }, { status: 401 });
   }
-  const { isbn, title, author } = await req.json();
+  const { isbn, title, author, cover } = await req.json();
 
   const userEmail = session.user.email;
 
@@ -40,6 +41,7 @@ export async function POST(req: NextRequest) {
         title,
         author,
         totalPages,
+        cover,
       },
     });
 

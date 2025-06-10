@@ -7,7 +7,7 @@ import Image from "next/image";
 import Pagination from "./Pagination";
 import LoadingDotsSkeleton from "@/ui/Skeleton";
 import BookListHeader from "./BookListHeader";
-import AddBookDialog from "./addBookDialog";
+import AddBookDialog from "./AddBookDialog";
 import { addBook } from "@/lib/addBook";
 import Toast from "@/ui/Toast";
 

@@ -4,9 +4,10 @@
 import styled from "@emotion/styled";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { House, BookOpenText, Search, Cog } from "lucide-react";
 
 interface MenuItem {
-  icon: string;
+  icon: React.ReactNode;
   label: string;
   href: string;
 }
@@ -18,22 +19,22 @@ export default function Footer() {
   }
   const menuItems: MenuItem[] = [
     {
-      icon: "🏠",
+      icon: <House />,
       label: "홈",
       href: "/home",
     },
     {
-      icon: "🔍",
+      icon: <BookOpenText />,
       label: "서재",
       href: "/study",
     },
     {
-      icon: "📋",
+      icon: <Search />,
       label: "책 추가하기",
       href: "/addBook",
     },
     {
-      icon: "⚙️",
+      icon: <Cog />,
       label: "설정",
       href: "/settings",
     },
@@ -60,7 +61,7 @@ export default function Footer() {
         bottom: 0,
         left: 0,
         width: "100%",
-        backgroundColor: "#fff",
+        backgroundColor: "white",
         padding: "0.5rem 0",
         borderTop: "1px solid rgba(255, 255, 255, 0.1)",
         zIndex: 1000,

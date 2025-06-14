@@ -11,6 +11,27 @@ import { addBook } from "@/lib/addBook";
 import { AladinBookItem } from "@/types/userBook";
 import List from "./BookList";
 import AppendBookDialog from "./AppendBookDialog";
+import { css } from "@emotion/react";
+
+const mainStyles = css`
+  padding: 0 2rem;
+`;
+
+const contentContainerStyles = css`
+  margin-top: 196px;
+`;
+
+const errorMessageStyles = css`
+  color: #ff4d4f;
+  text-align: center;
+  line-height: 1.5;
+`;
+
+const bookListContainerStyles = css`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
 
 export default function AddBook() {
   const [query, setQuery] = useState("");
@@ -58,11 +79,7 @@ export default function AddBook() {
 
   return (
     <>
-      <main
-        css={{
-          padding: "0 2rem",
-        }}
-      >
+      <main css={mainStyles}>
         <BookListHeader
           query={query}
           setQuery={setQuery}
@@ -71,15 +88,15 @@ export default function AddBook() {
           handleSearch={handleSearch}
         />
         {toastMessage && <Toast message={toastMessage} />}
-        <div css={{ marginTop: "196px" }}>
+        <div css={contentContainerStyles}>
           {error && (
-            <p>
+            <p css={errorMessageStyles}>
               오류가 발생했습니다. <br /> 다시 시도해주세요.
             </p>
           )}
           {loading && <LoadingDotsSkeleton />}
           {!error && books.length > 0 && !loading && (
-            <div>
+            <div css={bookListContainerStyles}>
               {books.slice((page - 1) * 10, page * 10).map((book) => (
                 <List
                   key={book.isbn}

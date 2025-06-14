@@ -8,7 +8,6 @@ const ALADIN_TTB_KEY = process.env.ALADIN_TTB_KEY!;
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
-  console.log(session);
   if (!session?.user?.email) {
     return NextResponse.json({ error: "로그인 필요" }, { status: 401 });
   }

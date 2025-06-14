@@ -5,6 +5,7 @@ import { AiOutlineLeft } from "@react-icons/all-files/ai/AiOutlineLeft";
 import { AiOutlineRight } from "@react-icons/all-files/ai/AiOutlineRight";
 import { AiOutlineDoubleLeft } from "@react-icons/all-files/ai/AiOutlineDoubleLeft";
 import { AiOutlineDoubleRight } from "@react-icons/all-files/ai/AiOutlineDoubleRight";
+import { css } from "@emotion/react";
 
 interface PaginationProps {
   total: number;
@@ -15,6 +16,34 @@ interface PaginationProps {
   handleSearch: (pageGroup: number) => void;
 }
 
+const paginationContainerStyles = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const iconButtonStyles = css`
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  &:active {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const pageButtonStyles = (isActive: boolean) => css`
+  ${iconButtonStyles}
+  background-color: ${isActive ? "rgba(0, 0, 0, 0.1)" : "white"};
+`;
+
 export default function Pagination({
   total,
   page,
@@ -23,21 +52,6 @@ export default function Pagination({
   setPageGroup,
   handleSearch,
 }: PaginationProps) {
-  const iconButtonStyle = {
-    width: "16px",
-    height: "16px",
-    lineHeight: "16px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "8px",
-    borderRadius: "50%",
-    cursor: "pointer",
-    transition: "background-color 0.2s",
-    "&:active": {
-      backgroundColor: "rgba(0, 0, 0, 0.1)",
-    },
-  };
   const maxPageGroup = Math.ceil(total / 50);
   const maxPage = Math.ceil(total / 10);
   const pageStartNumber = (pageGroup - 1) * 5 + 1;
@@ -48,16 +62,9 @@ export default function Pagination({
   );
 
   return (
-    <div
-      css={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: "0.5rem",
-      }}
-    >
+    <div css={paginationContainerStyles}>
       <AiOutlineDoubleLeft
-        css={iconButtonStyle}
+        css={iconButtonStyles}
         onClick={() => {
           if (pageGroup === 1) return;
           setPageGroup(1);
@@ -66,7 +73,7 @@ export default function Pagination({
         }}
       />
       <AiOutlineLeft
-        css={iconButtonStyle}
+        css={iconButtonStyles}
         onClick={() => {
           if (pageGroup === 1) return;
           setPageGroup(pageGroup - 1);
@@ -79,20 +86,14 @@ export default function Pagination({
         <div
           key={idx}
           onClick={() => setPage((idx + 1) as 1 | 2 | 3 | 4 | 5)}
-          css={{
-            backgroundColor:
-              num === (pageGroup - 1) * 5 + page
-                ? "rgba(0, 0, 0, 0.1)"
-                : "white",
-            ...iconButtonStyle,
-          }}
+          css={pageButtonStyles(num === (pageGroup - 1) * 5 + page)}
         >
           {num}
         </div>
       ))}
 
       <AiOutlineRight
-        css={iconButtonStyle}
+        css={iconButtonStyles}
         onClick={() => {
           if (pageGroup === maxPageGroup) return;
           setPageGroup(pageGroup + 1);
@@ -101,7 +102,7 @@ export default function Pagination({
         }}
       />
       <AiOutlineDoubleRight
-        css={iconButtonStyle}
+        css={iconButtonStyles}
         onClick={() => {
           if (pageGroup === maxPageGroup) return;
           setPageGroup(Math.ceil(total / 50));

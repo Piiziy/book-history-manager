@@ -2,7 +2,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { getCurrentReadingBooks } from "@/lib/currentReadingBooks";
 import { readingBookAtom } from "@/store/readingBook";
 import { useAtom } from "jotai";
@@ -12,11 +12,18 @@ export default function ReadingBooks() {
   const { data: session } = useSession();
   const [readingBooks, setReadingBooks] = useAtom(readingBookAtom);
 
-  useEffect(() => {
-    getCurrentReadingBooks().then((books) => {
+  const refreshBooks = useCallback(async () => {
+    try {
+      const books = await getCurrentReadingBooks();
       setReadingBooks(books);
-    });
+    } catch (error) {
+      console.error("Error refreshing books:", error);
+    }
   }, [setReadingBooks]);
+
+  useEffect(() => {
+    refreshBooks();
+  }, [refreshBooks]);
 
   return (
     <>
@@ -50,7 +57,7 @@ export default function ReadingBooks() {
           zIndex: -1,
         }}
       />
-      <BookSection />
+      <BookSection onRecordAdded={refreshBooks} />
     </>
   );
 }

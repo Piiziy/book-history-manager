@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { keyframes } from "@emotion/react";
+import { createPortal } from "react-dom";
 
 const fadeIn = keyframes`
   from {
@@ -25,13 +26,13 @@ const fadeOut = keyframes`
 `;
 
 export default function Toast({ message }: { message: string }) {
-  return (
+  return createPortal(
     <div
       css={{
         position: "fixed",
         bottom: "100px",
         left: "50%",
-        transform: "translateX(0%)",
+        transform: "translateX(-50%)",
         background: "rgb(255, 255, 255)",
         color: "black",
         padding: "0.75rem 1.5rem",
@@ -44,6 +45,7 @@ export default function Toast({ message }: { message: string }) {
       }}
     >
       {message}
-    </div>
+    </div>,
+    document.body
   );
 }

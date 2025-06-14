@@ -1,23 +1,30 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { readingBookAtom } from "@/store/readingBook";
 import { useAtom } from "jotai";
-import ReadingBookInfo from "./readingBookInfo";
+import BookInfo from "./BookInfo";
+import BookHistoryGraph from "./BookHistoryGraph";
+import AddRecordButton from "./AddRecordButton";
 
-export default function BookSection() {
+interface BookSectionProps {
+  onRecordAdded: () => void;
+}
+
+export default function BookSection({ onRecordAdded }: BookSectionProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [readingBooks] = useAtom(readingBookAtom);
+  const sliderRef = useRef<Slider>(null);
 
   const settings = {
     speed: 500,
     cssEase: "ease-in-out",
     arrows: false,
-    dots: true,
+    dots: false,
     swipeToSlide: true,
     waitForAnimate: false,
     touchThreshold: 10,
@@ -28,31 +35,21 @@ export default function BookSection() {
     useCSS: true,
     infinite: false,
     beforeChange: (current: number, next: number) => setCurrentSlide(next),
-    dotsClass: "slick-dots custom-dots",
     slidesToShow: 1,
     slidesToScroll: 1,
-    customPaging: (i: number) => (
-      <div
-        css={{
-          width: "10px",
-          height: "10px",
-          borderRadius: "50%",
-          backgroundColor: currentSlide === i ? "#6B4EFF" : "#D1D1D1",
-          transition: "all 0.3s ease",
-        }}
-      />
-    ),
   };
 
   return (
     <div
       css={{
+        overflow: "visible",
         display: "flex",
         flexDirection: "column",
         boxSizing: "border-box",
         fontWeight: 700,
         padding: "0 1rem",
         width: "100%",
+        position: "relative",
         ".slick-slider": {
           width: "100%",
           overflow: "hidden",
@@ -70,17 +67,53 @@ export default function BookSection() {
             height: "100%",
           },
         },
-        ".slick-dots": {
-          bottom: "-40px",
-          li: {
-            margin: "0 8px",
-          },
-        },
+        ".slick-dots": {},
       }}
     >
-      <Slider {...settings}>
+      <div
+        css={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "8px",
+          marginBottom: "20px",
+          padding: "10px 0",
+        }}
+      >
+        {readingBooks.map((_, index) => (
+          <button
+            key={index}
+            css={{
+              width: "12px",
+              height: "12px",
+              borderRadius: "50%",
+              border: "none",
+              backgroundColor: currentSlide === index ? "#6B4EFF" : "#D1D1D1",
+              transition: "all 0.3s ease",
+              cursor: "pointer",
+              "&:hover": {
+                backgroundColor: currentSlide === index ? "#5A3FD9" : "#B0B0B0",
+              },
+            }}
+            onClick={() => {
+              sliderRef.current?.slickGoTo(index);
+            }}
+          />
+        ))}
+      </div>
+
+      <Slider ref={sliderRef} {...settings}>
         {readingBooks.map((userBook, idx) => {
-          return <ReadingBookInfo key={idx} userBook={userBook} />;
+          return (
+            <div key={idx}>
+              <BookInfo userBook={userBook} />
+              <AddRecordButton
+                userBook={userBook}
+                onRecordAdded={onRecordAdded}
+              />
+              <BookHistoryGraph userBook={userBook} />
+            </div>
+          );
         })}
       </Slider>
     </div>

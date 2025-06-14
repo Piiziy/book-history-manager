@@ -15,7 +15,7 @@ export default function useBookProgress(userBook: UserBook): BookProgressInfo {
       ? userBook.records[userBook.records.length - 1].cumulativePages
       : 0;
   const totalPages = userBook.book.totalPages;
-  const percentage = (currentPage / totalPages) * 100;
+  const percentage = totalPages > 0 ? (currentPage / totalPages) * 100 : 0;
   const isStarted = currentPage > 0;
   const remainingPages = totalPages - currentPage;
 

@@ -1,22 +1,13 @@
-export interface BookItem {
-  title: string;
-  author: string;
-  publisher: string;
-  pubdate: string;
-  isbn: string;
-  description: string;
-  pubDate: string;
-  cover: string;
-}
+import { AladinBookItem } from "@/types/userBook";
 
-export interface BookSearchResult {
+interface FetchBookSearchResult {
   totalResults: number;
   startIndex: number;
   itemsPerPage: number;
-  item: BookItem[];
+  item: AladinBookItem[];
 }
 
-interface FetchBooksProps {
+interface FetchBookSearchRequest {
   query: string;
   MaxResults?: number;
   start?: number;
@@ -28,7 +19,7 @@ export async function fetchBooks({
   MaxResults = 50,
   start = 1,
   sort = "sim",
-}: FetchBooksProps): Promise<BookSearchResult> {
+}: FetchBookSearchRequest): Promise<FetchBookSearchResult> {
   const params = new URLSearchParams({
     query,
     display: MaxResults.toString(),

@@ -1,6 +1,6 @@
-import { BookItem } from "./fetchBooks";
+import { AladinBookItem } from "@/types/userBook";
 
-export async function addBook(book: BookItem) {
+export async function addBook(book: AladinBookItem) {
   console.log(book);
   const response = await fetch("/api/books/add", {
     method: "POST",

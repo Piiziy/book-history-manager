@@ -1,7 +1,7 @@
-import { BookItem } from "./fetchBooks";
+import { UserBook } from "@/types/userBook";
 
-export async function getCurrentReadingBooks(): Promise<BookItem[]> {
+export async function getCurrentReadingBooks(): Promise<UserBook[]> {
   const res = await fetch("/api/books/current-reading");
-  const readingBooks = await res.json();
-  return readingBooks;
+  const userBooks = await res.json();
+  return userBooks;
 }

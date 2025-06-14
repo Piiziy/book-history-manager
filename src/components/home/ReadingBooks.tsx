@@ -2,37 +2,21 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { BookItem } from "@/lib/fetchBooks";
+import { useEffect } from "react";
 import { getCurrentReadingBooks } from "@/lib/currentReadingBooks";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Image from "next/image";
+import { readingBookAtom } from "@/store/readingBook";
+import { useAtom } from "jotai";
+import BookSection from "./bookSection";
 
 export default function ReadingBooks() {
   const { data: session } = useSession();
-  const [readingBooks, setReadingBooks] = useState<BookItem[]>([]);
-  console.log(readingBooks);
-  const settings = {
-    speed: 300,
-    cssEase: "linear",
-    arrows: false,
-    dots: false,
-    swipeToSlide: true,
-    waitForAnimate: false,
-    touchThreshold: 10,
-    draggable: true,
-    swipe: true,
-    touchMove: true,
-    useTransform: true,
-    useCSS: true,
-    infinite: false,
-  };
+  const [readingBooks, setReadingBooks] = useAtom(readingBookAtom);
 
   useEffect(() => {
-    getCurrentReadingBooks().then((books) => setReadingBooks(books));
-  }, []);
+    getCurrentReadingBooks().then((books) => {
+      setReadingBooks(books);
+    });
+  }, [setReadingBooks]);
 
   return (
     <>
@@ -42,9 +26,12 @@ export default function ReadingBooks() {
           fontWeight: 700,
         }}
       >
-        <p css={{ fontSize: "2rem", fontWeight: 700 }}>
+        <p css={{ fontSize: "2rem", fontWeight: 700, marginBottom: "0.5rem" }}>
           {session?.user?.name}
           <span css={{ fontSize: "1.5rem" }}>님 반갑습니다!</span>
+        </p>
+        <p css={{ fontSize: "1.2rem", color: "#666" }}>
+          현재 읽고 계신 책 {readingBooks.length}권이 있습니다
         </p>
       </div>
 
@@ -63,35 +50,7 @@ export default function ReadingBooks() {
           zIndex: -1,
         }}
       />
-      <div
-        css={{
-          display: "flex",
-          flexDirection: "column",
-          boxSizing: "border-box",
-          fontWeight: 700,
-          padding: "0 1rem",
-        }}
-      >
-        <Slider {...settings}>
-          {readingBooks.map((book, idx) => (
-            <div key={idx}>
-              <p css={{ fontSize: "1.5rem", fontWeight: 700 }}>
-                {book.title.length > 30
-                  ? book.title.slice(0, 30) + "..."
-                  : book.title}
-              </p>
-
-              <Image
-                src={book.cover}
-                alt={book.title}
-                height={200}
-                width={200}
-                style={{ width: "200px", height: "auto" }}
-              />
-            </div>
-          ))}
-        </Slider>
-      </div>
+      <BookSection />
     </>
   );
 }

@@ -17,14 +17,14 @@ export async function GET() {
     select: { id: true },
   });
 
-  const currentReadingBooks = await prisma.book.findMany({
+  const currentReadingBooks = await prisma.userBook.findMany({
     where: {
-      userBooks: {
-        some: {
-          userId: user.id,
-          status: "CURRENTLY_READING",
-        },
-      },
+      userId: user.id,
+      status: "CURRENTLY_READING",
+    },
+    include: {
+      book: true,
+      records: true,
     },
   });
   console.log(currentReadingBooks);

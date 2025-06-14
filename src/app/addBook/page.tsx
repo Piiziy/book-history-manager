@@ -1,5 +1,5 @@
-import BookList from "@/components/findBook/BookList";
+import AddBook from "@/components/findBook";
 
 export default function Home() {
-  return <BookList />;
+  return <AddBook />;
 }

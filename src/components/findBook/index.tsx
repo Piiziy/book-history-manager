@@ -7,10 +7,10 @@ import Pagination from "./Pagination";
 import LoadingDotsSkeleton from "@/ui/Skeleton";
 import Toast from "@/ui/Toast";
 import BookListHeader from "./BookListHeader";
-import AddBookDialog from "./AddBookDialog";
 import { addBook } from "@/lib/addBook";
 import { AladinBookItem } from "@/types/userBook";
 import List from "./BookList";
+import AppendBookDialog from "./AppendBookDialog";
 
 export default function AddBook() {
   const [query, setQuery] = useState("");
@@ -102,7 +102,7 @@ export default function AddBook() {
           )}
         </div>
         {isOpenDialog && (
-          <AddBookDialog
+          <AppendBookDialog
             setIsOpen={setIsOpenDialog}
             onConfirm={handleAddBook}
             book={selectedBook}

@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+
 import { css } from "@emotion/react";
 import {
   Chart as ChartJS,

@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-"use client";
 
 import { AiOutlineLeft } from "@react-icons/all-files/ai/AiOutlineLeft";
 import { AiOutlineRight } from "@react-icons/all-files/ai/AiOutlineRight";

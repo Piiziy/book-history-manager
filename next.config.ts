@@ -13,7 +13,13 @@ const nextConfig: NextConfig = {
     emotion: true,
   },
   images: {
-    domains: ["image.aladin.co.kr"],
+    domains: [
+      "image.aladin.co.kr",
+      "lh3.googleusercontent.com",
+      "lh4.googleusercontent.com",
+      "lh5.googleusercontent.com",
+      "lh6.googleusercontent.com",
+    ],
   },
   async redirects() {
     return [

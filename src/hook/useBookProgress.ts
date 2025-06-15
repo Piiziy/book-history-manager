@@ -19,7 +19,6 @@ export default function useBookProgress(userBook: UserBook): BookProgressInfo {
   const isStarted = currentPage > 0;
   const remainingPages = totalPages - currentPage;
 
-  // 읽기 시작한 책에 대해서만 예상 완독일 계산
   let estimatedDaysToComplete;
   if (isStarted && userBook.records.length >= 2) {
     const recentRecords = userBook.records.slice(-2);

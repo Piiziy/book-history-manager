@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-"use client";
 
 import { useState, useRef } from "react";
 import Slider from "react-slick";

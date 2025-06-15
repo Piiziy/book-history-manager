@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-"use client";
 
 import { useCallback, useState } from "react";
 import { fetchBooks } from "@/lib/fetchBooks";
@@ -33,6 +32,17 @@ const bookListContainerStyles = css`
   gap: 1rem;
 `;
 
+const noResultsStyles = css`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #999999;
+  font-size: 0.75rem;
+  text-align: center;
+  line-height: 1.5;
+`;
+
 export default function AddBook() {
   const [query, setQuery] = useState("");
   const [books, setBooks] = useState<AladinBookItem[]>([]);
@@ -44,6 +54,8 @@ export default function AddBook() {
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [selectedBook, setSelectedBook] = useState<AladinBookItem | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  console.log(error, loading, books?.length);
 
   const handleSearch = useCallback(
     (pageGroup: number) => {
@@ -94,28 +106,34 @@ export default function AddBook() {
               오류가 발생했습니다. <br /> 다시 시도해주세요.
             </p>
           )}
+
           {loading && <LoadingDotsSkeleton />}
-          {!error && books.length > 0 && !loading && (
-            <div css={bookListContainerStyles}>
-              {books.slice((page - 1) * 10, page * 10).map((book) => (
-                <List
-                  key={book.isbn}
-                  book={book}
-                  setSelectedBook={setSelectedBook}
-                  setIsOpenDialog={setIsOpenDialog}
-                />
-              ))}
-            </div>
+
+          {!error && !loading && books?.length > 0 && (
+            <>
+              <div css={bookListContainerStyles}>
+                {books.slice((page - 1) * 10, page * 10).map((book) => (
+                  <List
+                    key={book.isbn}
+                    book={book}
+                    setSelectedBook={setSelectedBook}
+                    setIsOpenDialog={setIsOpenDialog}
+                  />
+                ))}
+              </div>
+              <Pagination
+                total={total}
+                page={page}
+                setPage={setPage}
+                pageGroup={pageGroup}
+                setPageGroup={setPageGroup}
+                handleSearch={handleSearch}
+              />
+            </>
           )}
-          {books.length > 0 && !loading && (
-            <Pagination
-              total={total}
-              page={page}
-              setPage={setPage}
-              pageGroup={pageGroup}
-              setPageGroup={setPageGroup}
-              handleSearch={handleSearch}
-            />
+
+          {!error && !loading && (!books?.length || books?.length === 0) && (
+            <p css={noResultsStyles}>검색 결과가 없습니다.</p>
           )}
         </div>
         {isOpenDialog && (

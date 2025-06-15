@@ -11,7 +11,7 @@ export interface UserBook {
   records: ReadingRecord[];
 }
 
-export type ReadingStatus = "CURRENTLY_READING" | "FINISHED";
+export type ReadingStatus = "CURRENTLY_READING" | "COMPLETED";
 
 export interface Book {
   id: string;

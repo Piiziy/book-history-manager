@@ -1,5 +1,7 @@
 /** @jsxImportSource @emotion/react */
+
 import { css } from "@emotion/react";
+import { Search } from "lucide-react";
 
 interface BookListHeaderProps {
   query: string;
@@ -15,7 +17,6 @@ const backgroundStyles = css`
   left: 0;
   width: 100%;
   height: 185px;
-  background-color: white;
   z-index: 1;
 `;
 
@@ -38,41 +39,33 @@ const titleStyles = css`
 `;
 
 const searchContainerStyles = css`
-  display: flex;
-  gap: 1rem;
+  position: relative;
+  width: 80vw
+  margin-bottom: 1rem;
 `;
 
 const inputStyles = css`
-  padding: 0.5rem;
+  padding: 0.5rem 3rem 0.5rem 0.5rem;
+  border: none;
+  border-bottom: 0.5px solid rgb(221, 221, 221);
   width: 100%;
-  margin-bottom: 1rem;
-  border: 0.5px solid rgb(221, 221, 221);
-  border-radius: 0.5rem;
+  box-sizing: border-box;
   &:focus {
     outline: none;
-    border: 0.5px solid rgb(221, 221, 221);
+    border-bottom: 0.5px solid #9370db;
   }
 `;
 
-const searchButtonStyles = css`
-  padding: 0.5rem;
-  width: 50px;
-  margin-bottom: 1rem;
-  background-color: #e6e6fa;
-  border: none;
-  border-radius: 0.5rem;
+const searchIconStyles = css`
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
   cursor: pointer;
+  color: #666;
   &:hover {
-    background-color: #d8d8f6;
+    color: #333;
   }
-`;
-
-const gradientStyles = css`
-  height: 2rem;
-  background: linear-gradient(to top, rgba(255, 255, 255, 0), #fff);
-  background-position: bottom;
-  background-repeat: no-repeat;
-  background-size: 100% 2rem;
 `;
 
 export default function BookListHeader({
@@ -95,18 +88,15 @@ export default function BookListHeader({
             placeholder="검색어를 입력해주세요."
             css={inputStyles}
           />
-          <button
-            css={searchButtonStyles}
+          <Search
+            css={searchIconStyles}
             onClick={() => {
               setPage(1);
               setPageGroup(1);
               handleSearch(1);
             }}
-          >
-            검색
-          </button>
+          />
         </div>
-        <div css={gradientStyles}></div>
       </div>
     </>
   );

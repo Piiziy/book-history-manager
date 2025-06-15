@@ -1,6 +1,8 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-export default function Home() {
-  return <div css={{ height: 200 }}>asdf</div>;
+import Settings from "@/components/setting/Settings";
+
+export default function SettingsPage() {
+  return <Settings />;
 }

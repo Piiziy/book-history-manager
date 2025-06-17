@@ -4,8 +4,11 @@ import Provider from "./Providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "습관 관리",
-  description: "습관 관리 앱",
+  title: "한눈에 보는 독서 기록장",
+  description: "한눈에 보는 독서 기록장",
+  icons: {
+    icon: "/icons/icon-144x144.png",
+  },
 };
 
 export default function RootLayout({

@@ -11,21 +11,13 @@ interface BookListHeaderProps {
   handleSearch: (pageGroup: number) => void;
 }
 
-const backgroundStyles = css`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 185px;
-  z-index: 1;
-`;
-
 const headerContainerStyles = css`
   display: flex;
   flex-direction: column;
   position: fixed;
   top: 0;
   left: 0;
+  background-color: #fff;
   width: calc(100% - 4rem);
   padding: 0 2rem;
   z-index: 100;
@@ -77,7 +69,6 @@ export default function BookListHeader({
 }: BookListHeaderProps) {
   return (
     <>
-      <div css={backgroundStyles}></div>
       <div css={headerContainerStyles}>
         <div css={titleStyles}>책 추가하기</div>
         <div css={searchContainerStyles}>

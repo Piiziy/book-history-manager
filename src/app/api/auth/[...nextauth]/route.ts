@@ -18,7 +18,7 @@ export const authOptions: AuthOptions = {
     }),
   ],
   debug: true,
-  secret: process.env.NEXTAUTH_URL,
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "database",
   },

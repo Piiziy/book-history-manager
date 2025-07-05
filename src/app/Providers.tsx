@@ -1,6 +1,7 @@
 "use client";
 
 import { SessionProvider } from "next-auth/react";
+import { Provider as JotaiProvider } from "jotai";
 import RootStyleRegistry from "./emotion";
 
 type Props = {
@@ -10,7 +11,9 @@ type Props = {
 export default function Provider({ children }: Props) {
   return (
     <RootStyleRegistry>
-      <SessionProvider>{children}</SessionProvider>
+      <SessionProvider>
+        <JotaiProvider>{children}</JotaiProvider>
+      </SessionProvider>
     </RootStyleRegistry>
   );
 }

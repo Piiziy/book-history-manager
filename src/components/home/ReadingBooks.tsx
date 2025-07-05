@@ -37,7 +37,7 @@ export default function ReadingBooks() {
           <span css={{ fontSize: "1.5rem" }}>님 반갑습니다!</span>
         </p>
         <p css={{ fontSize: "1.2rem", color: "#666" }}>
-          현재 읽고 계신 책 {readingBooks.length}권이 있습니다
+          현재 읽고 계신 책 {readingBooks?.length || 0}권이 있습니다
         </p>
       </div>
 

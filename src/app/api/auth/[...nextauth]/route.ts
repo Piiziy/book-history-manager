@@ -20,14 +20,22 @@ export const authOptions: AuthOptions = {
   debug: true,
   secret: process.env.NEXTAUTH_SECRET,
   session: {
-    strategy: "database",
+    strategy: "jwt",
   },
   callbacks: {
-    async session({ session, user }) {
-      if (session.user) {
-        session.user.email = user.email;
-        session.user.name = user.name;
-        session.user.image = user.image;
+    async jwt({ token, user, account }) {
+      if (account && user) {
+        token.email = user.email;
+        token.name = user.name;
+        token.picture = user.image;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token && session.user) {
+        session.user.email = token.email;
+        session.user.name = token.name;
+        session.user.image = token.picture;
       }
       return session;
     },

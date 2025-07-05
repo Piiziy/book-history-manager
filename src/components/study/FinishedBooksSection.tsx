@@ -5,8 +5,7 @@ import { useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { finishedBooksAtom } from "@/store/finishedBooks";
-import { useAtom } from "jotai";
+import { UserBook } from "@/types/userBook";
 import LibraryBookCard from "./LibraryBookCard";
 import { LibraryBig } from "lucide-react";
 
@@ -67,8 +66,13 @@ const LibraryBigIcon = (
   <LibraryBig size={40} strokeWidth={1.5} color="#4c4f6d" />
 );
 
-export default function FinishedBooksSection() {
-  const [finishedBooks] = useAtom(finishedBooksAtom);
+interface FinishedBooksSectionProps {
+  finishedBooks: UserBook[];
+}
+
+export default function FinishedBooksSection({
+  finishedBooks,
+}: FinishedBooksSectionProps) {
   const sliderRef = useRef<Slider>(null);
 
   const settings = {

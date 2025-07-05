@@ -1,28 +1,34 @@
 /** @jsxImportSource @emotion/react */
 
 import { useSession } from "next-auth/react";
-import { useCallback, useEffect } from "react";
-import { getCurrentReadingBooks } from "@/lib/currentReadingBooks";
-import { readingBookAtom } from "@/store/readingBook";
-import { useAtom } from "jotai";
+import { use, useState, useCallback } from "react";
+import { useReadingBooksPromise } from "@/components/providers/ReadingBooksProvider";
+import {
+  getCurrentReadingBooksAction,
+  revalidateCurrentReadingBooks,
+} from "@/lib/actions/fetchBookHistory";
 import BookSection from "./bookSection";
 
 export default function ReadingBooks() {
   const { data: session } = useSession();
-  const [readingBooks, setReadingBooks] = useAtom(readingBookAtom);
+  const readingBooksPromise = useReadingBooksPromise();
+
+  // 초기 데이터를 상태로 관리
+  const initialReadingBooks = use(readingBooksPromise);
+  const [readingBooks, setReadingBooks] = useState(initialReadingBooks);
 
   const refreshBooks = useCallback(async () => {
     try {
-      const books = await getCurrentReadingBooks();
-      setReadingBooks(books);
+      // 캐시 재검증 먼저 실행
+      await revalidateCurrentReadingBooks();
+
+      // 새로운 데이터 가져오기
+      const updatedBooks = await getCurrentReadingBooksAction();
+      setReadingBooks(updatedBooks);
     } catch (error) {
       console.error("Error refreshing books:", error);
     }
-  }, [setReadingBooks]);
-
-  useEffect(() => {
-    refreshBooks();
-  }, [refreshBooks]);
+  }, []);
 
   return (
     <>
@@ -41,7 +47,7 @@ export default function ReadingBooks() {
         </p>
       </div>
 
-      <BookSection onRecordAdded={refreshBooks} />
+      <BookSection readingBooks={readingBooks} onRecordAdded={refreshBooks} />
     </>
   );
 }

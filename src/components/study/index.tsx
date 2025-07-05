@@ -1,12 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 
-import { useCallback, useEffect } from "react";
-import { useAtom } from "jotai";
-import { readingBookAtom } from "@/store/readingBook";
-import { finishedBooksAtom } from "@/store/finishedBooks";
-import { getCurrentReadingBooks } from "@/lib/currentReadingBooks";
-import { getFinishedBooks } from "@/lib/fetchFinishedBooks";
+import { use } from "react";
+import { useStudyBooksPromises } from "@/components/providers/StudyBooksProvider";
 import CurrentlyReadingSection from "./CurrentlyReadingSection";
 import FinishedBooksSection from "./FinishedBooksSection";
 
@@ -31,25 +27,11 @@ const subtitleStyle = css`
 `;
 
 export default function Study() {
-  const [readingBooks, setReadingBooks] = useAtom(readingBookAtom);
-  const [finishedBooks, setFinishedBooks] = useAtom(finishedBooksAtom);
+  const { readingBooksPromise, finishedBooksPromise } = useStudyBooksPromises();
 
-  const LoopUpBooks = useCallback(async () => {
-    try {
-      const [currentBooks, completedBooks] = await Promise.all([
-        getCurrentReadingBooks(),
-        getFinishedBooks(),
-      ]);
-      setReadingBooks(currentBooks);
-      setFinishedBooks(completedBooks);
-    } catch (error) {
-      console.error("Error refreshing books:", error);
-    }
-  }, [setReadingBooks, setFinishedBooks]);
-
-  useEffect(() => {
-    LoopUpBooks();
-  }, [LoopUpBooks]);
+  // use hook으로 Promise들 resolve
+  const readingBooks = use(readingBooksPromise);
+  const finishedBooks = use(finishedBooksPromise);
 
   return (
     <div css={containerStyle}>
@@ -68,8 +50,8 @@ export default function Study() {
         </p>
       </div>
 
-      <CurrentlyReadingSection />
-      <FinishedBooksSection />
+      <CurrentlyReadingSection readingBooks={readingBooks} />
+      <FinishedBooksSection finishedBooks={finishedBooks} />
     </div>
   );
 }

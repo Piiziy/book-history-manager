@@ -5,8 +5,7 @@ import { useState, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { readingBookAtom } from "@/store/readingBook";
-import { useAtom } from "jotai";
+import { UserBook } from "@/types/userBook";
 import LibraryBookCard from "./LibraryBookCard";
 import { BookOpen } from "lucide-react";
 
@@ -85,9 +84,14 @@ const indicatorButton = (isActive: boolean) => css`
 }}
 `;
 
-export default function CurrentlyReadingSection() {
+interface CurrentlyReadingSectionProps {
+  readingBooks: UserBook[];
+}
+
+export default function CurrentlyReadingSection({
+  readingBooks,
+}: CurrentlyReadingSectionProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [readingBooks] = useAtom(readingBookAtom);
   const sliderRef = useRef<Slider>(null);
 
   const settings = {

@@ -9,7 +9,7 @@ import Toast from "@/ui/Toast";
 
 interface AddRecordButtonProps {
   userBook: UserBook;
-  onRecordAdded?: () => void;
+  refreshBooks: () => Promise<void>;
 }
 
 const buttonStyles = css`
@@ -152,7 +152,7 @@ const CompletionDialog = ({
 
 export default function AddRecordButton({
   userBook,
-  onRecordAdded,
+  refreshBooks,
 }: AddRecordButtonProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [pages, setPages] = useState("");
@@ -177,7 +177,7 @@ export default function AddRecordButton({
       }
 
       // Call the callback to refresh data
-      onRecordAdded?.();
+      refreshBooks();
     } catch (error) {
       console.error("Error adding reading record:", error);
       setToastMessage("페이지 추가에 실패했습니다");

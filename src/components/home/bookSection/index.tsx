@@ -4,19 +4,21 @@ import { useState, useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { readingBookAtom } from "@/store/readingBook";
-import { useAtom } from "jotai";
+import { UserBook } from "@/types/userBook";
 import BookInfo from "./BookInfo";
 import BookHistoryGraph from "./BookHistoryGraph";
 import AddRecordButton from "./AddRecordButton";
 
 interface BookSectionProps {
-  onRecordAdded: () => void;
+  readingBooks: UserBook[];
+  onRecordAdded: () => Promise<void>;
 }
 
-export default function BookSection({ onRecordAdded }: BookSectionProps) {
+export default function BookSection({
+  readingBooks,
+  onRecordAdded,
+}: BookSectionProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [readingBooks] = useAtom(readingBookAtom);
   const sliderRef = useRef<Slider>(null);
 
   const settings = {
@@ -108,7 +110,7 @@ export default function BookSection({ onRecordAdded }: BookSectionProps) {
               <BookInfo userBook={userBook} />
               <AddRecordButton
                 userBook={userBook}
-                onRecordAdded={onRecordAdded}
+                refreshBooks={onRecordAdded}
               />
               <BookHistoryGraph userBook={userBook} />
             </div>

@@ -58,7 +58,7 @@ export default function List({
       <Image
         src={book.cover}
         alt={book.title}
-        height={0}
+        height={150}
         width={100}
         css={imageStyles}
       />

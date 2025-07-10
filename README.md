@@ -34,6 +34,9 @@
 - **Prisma ORM** - 타입 세이프한 데이터베이스 접근
 - **PostgreSQL** - 관계형 데이터베이스
 
+### **Deploy**
+- **Vercel**을 이용하여 배포
+
 ## ✨ 주요 기능
 
 - 📖 **도서 등록 및 관리** - 쉬운 도서 추가 및 상태 관리
@@ -55,7 +58,7 @@ yarn dev
 yarn build
 ```
 
-프로젝트는 [http://localhost:3000](http://localhost:3000)에서 확인할 수 있습니다.
+프로젝트는 [https://www.bookhistorymanager.site/login](https://www.bookhistorymanager.site/login)에서 확인할 수 있습니다.
 
 ## 💡 기술적 특징
 

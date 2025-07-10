@@ -58,7 +58,7 @@ yarn dev
 yarn build
 ```
 
-프로젝트는 [https://www.bookhistorymanager.site/login](https://www.bookhistorymanager.site/login)에서 확인할 수 있습니다.
+프로젝트는 [https://www.bookhistorymanager.site](https://www.bookhistorymanager.site)에서 확인할 수 있습니다.
 
 ## 💡 기술적 특징
 

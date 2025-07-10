@@ -1,13 +1,4 @@
 import type { NextConfig } from "next";
-import withPWA from "next-pwa";
-
-const pwaConfig = withPWA({
-  dest: "public",
-  register: true,
-  skipWaiting: true,
-  disable: process.env.NODE_ENV === "development",
-  runtimeCaching: [],
-});
 
 const nextConfig: NextConfig = {
   images: {
@@ -43,5 +34,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-// @ts-expect-error next-pwa 5.6.0 버전에서 오류가 발생하여 무시
-export default pwaConfig(nextConfig);
+export default nextConfig;

@@ -2,6 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { use, useState, useCallback } from "react";
+import Image from "next/image";
 import { useReadingBooksPromise } from "@/components/providers/ReadingBooksProvider";
 import {
   getCurrentReadingBooksAction,
@@ -47,7 +48,33 @@ export default function ReadingBooks() {
         </p>
       </div>
 
-      <BookSection readingBooks={readingBooks} onRecordAdded={refreshBooks} />
+      {readingBooks?.length === 0 ? (
+        <div
+          css={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: "50vh",
+            padding: "2rem",
+          }}
+        >
+          <Image
+            src="/image/home_empty_imgae.png"
+            alt="읽고 있는 책이 없습니다"
+            width={300}
+            height={300}
+            style={{
+              maxWidth: "100%",
+              height: "auto",
+              objectFit: "contain",
+            }}
+            priority
+          />
+        </div>
+      ) : (
+        <BookSection readingBooks={readingBooks} onRecordAdded={refreshBooks} />
+      )}
     </>
   );
 }

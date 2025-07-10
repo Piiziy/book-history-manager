@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Footer from "./Footer";
 import Provider from "./Providers";
+import MobileOnlyNotice from "./MobileOnlyNotice";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body>
+        <MobileOnlyNotice />
         <Provider>
           {children}
           <Footer />

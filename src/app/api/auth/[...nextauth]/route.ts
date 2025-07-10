@@ -17,7 +17,7 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
-  debug: process.env.NODE_ENV === "development",
+  debug: false, // 프로덕션에서 항상 false
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",

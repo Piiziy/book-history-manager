@@ -45,14 +45,6 @@ const imageContainer = css`
   max-width: 150px;
 `;
 
-const imageStyle = css`
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  object-fit: cover;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-`;
-
 const completedBookContainer = css`
   text-align: center;
   margin-top: 0.5rem;
@@ -102,9 +94,16 @@ export default function LibraryBookCard({
           <Image
             src={userBook.book.cover}
             alt={userBook.book.title}
-            height={isCurrentlyReading ? 150 : 160}
             width={isCurrentlyReading ? 150 : 120}
-            css={imageStyle}
+            height={isCurrentlyReading ? 225 : 180}
+            sizes="(max-width: 768px) 120px, 150px"
+            style={{
+              width: "100%",
+              height: "auto",
+              borderRadius: "8px",
+              objectFit: "cover",
+              boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
+            }}
             priority
           />
         </div>

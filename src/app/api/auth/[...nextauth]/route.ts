@@ -17,28 +17,42 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
-  debug: true,
+  debug: process.env.NODE_ENV === "development",
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
   },
   callbacks: {
     async jwt({ token, user, account }) {
-      if (account && user) {
-        token.email = user.email;
-        token.name = user.name;
-        token.picture = user.image;
+      try {
+        if (account && user) {
+          token.email = user.email;
+          token.name = user.name;
+          token.picture = user.image;
+        }
+        return token;
+      } catch (error) {
+        console.error("JWT callback error:", error);
+        return token;
       }
-      return token;
     },
     async session({ session, token }) {
-      if (token && session.user) {
-        session.user.email = token.email;
-        session.user.name = token.name;
-        session.user.image = token.picture;
+      try {
+        if (token && session.user) {
+          session.user.email = token.email;
+          session.user.name = token.name;
+          session.user.image = token.picture;
+        }
+        return session;
+      } catch (error) {
+        console.error("Session callback error:", error);
+        return session;
       }
-      return session;
     },
+  },
+  pages: {
+    signIn: "/login",
+    error: "/login",
   },
 };
 

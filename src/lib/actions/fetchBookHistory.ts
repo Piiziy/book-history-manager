@@ -7,38 +7,48 @@ import { prisma } from "@/lib/prisma";
 import { UserBook } from "@/types/userBook";
 
 async function _getCurrentReadingBooks(userId: string): Promise<UserBook[]> {
-  const currentReadingBooks = await prisma.userBook.findMany({
-    where: {
-      userId,
-      status: "CURRENTLY_READING",
-    },
-    include: {
-      book: true,
-      records: true,
-    },
-  });
+  try {
+    const currentReadingBooks = await prisma.userBook.findMany({
+      where: {
+        userId,
+        status: "CURRENTLY_READING",
+      },
+      include: {
+        book: true,
+        records: true,
+      },
+    });
 
-  return currentReadingBooks as unknown as UserBook[];
+    return currentReadingBooks as unknown as UserBook[];
+  } catch (error) {
+    console.error("Error fetching current reading books:", error);
+    return [];
+  }
 }
 
 async function _getFinishedBooks(userId: string): Promise<UserBook[]> {
-  const finishedBooks = await prisma.userBook.findMany({
-    where: {
-      userId,
-      status: "COMPLETED",
-    },
-    include: {
-      book: true,
-      records: {
-        orderBy: { date: "asc" },
+  try {
+    const finishedBooks = await prisma.userBook.findMany({
+      where: {
+        userId,
+        status: "COMPLETED",
       },
-    },
-    orderBy: {
-      finishedAt: "desc",
-    },
-  });
+      include: {
+        book: true,
+        records: {
+          orderBy: { date: "asc" },
+        },
+      },
+      orderBy: {
+        finishedAt: "desc",
+      },
+    });
 
-  return finishedBooks as unknown as UserBook[];
+    return finishedBooks as unknown as UserBook[];
+  } catch (error) {
+    console.error("Error fetching finished books:", error);
+    return [];
+  }
 }
 
 const getCachedCurrentReadingBooks = unstable_cache(
@@ -60,37 +70,57 @@ const getCachedFinishedBooks = unstable_cache(
 );
 
 export async function getCurrentReadingBooksAction(): Promise<UserBook[]> {
-  const session = await getServerSession(authOptions);
+  try {
+    const session = await getServerSession(authOptions);
 
-  if (!session?.user?.email) {
+    if (!session?.user?.email) {
+      return [];
+    }
+
+    const userEmail = session.user.email;
+
+    const user = await prisma.user.findUnique({
+      where: { email: userEmail },
+      select: { id: true },
+    });
+
+    if (!user) {
+      console.warn(`User not found with email: ${userEmail}`);
+      return [];
+    }
+
+    return getCachedCurrentReadingBooks(user.id);
+  } catch (error) {
+    console.error("Error in getCurrentReadingBooksAction:", error);
     return [];
   }
-
-  const userEmail = session.user.email;
-
-  const user = await prisma.user.findUniqueOrThrow({
-    where: { email: userEmail },
-    select: { id: true },
-  });
-
-  return getCachedCurrentReadingBooks(user.id);
 }
 
 export async function getFinishedBooksAction(): Promise<UserBook[]> {
-  const session = await getServerSession(authOptions);
+  try {
+    const session = await getServerSession(authOptions);
 
-  if (!session?.user?.email) {
+    if (!session?.user?.email) {
+      return [];
+    }
+
+    const userEmail = session.user.email;
+
+    const user = await prisma.user.findUnique({
+      where: { email: userEmail },
+      select: { id: true },
+    });
+
+    if (!user) {
+      console.warn(`User not found with email: ${userEmail}`);
+      return [];
+    }
+
+    return getCachedFinishedBooks(user.id);
+  } catch (error) {
+    console.error("Error in getFinishedBooksAction:", error);
     return [];
   }
-
-  const userEmail = session.user.email;
-
-  const user = await prisma.user.findUniqueOrThrow({
-    where: { email: userEmail },
-    select: { id: true },
-  });
-
-  return getCachedFinishedBooks(user.id);
 }
 
 export async function revalidateCurrentReadingBooks() {
